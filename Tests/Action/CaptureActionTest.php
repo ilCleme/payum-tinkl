@@ -5,6 +5,7 @@ use IlCleme\Tinkl\Action\CaptureAction;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
 use Payum\Core\Request\Capture;
+use Payum\Core\Request\Generic;
 use Payum\Core\Storage\IdentityInterface;
 use Payum\Core\Tests\GenericActionTest;
 use \Payum\Core\Reply\HttpRedirect;

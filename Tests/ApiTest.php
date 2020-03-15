@@ -127,7 +127,6 @@ class ApiTest extends TestCase
 
         $parameter = 'test/test/';
         $endpoint = $api->getEndpoint($parameter);
-        $this->assertIsString($endpoint);
         $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $endpoint);
         $this->assertStringEndsWith($parameter, $endpoint);
     }
@@ -145,7 +144,6 @@ class ApiTest extends TestCase
 
         $parameter = 'test/test/';
         $endpoint = $api->getEndpoint($parameter);
-        $this->assertIsString($endpoint);
         $this->assertStringStartsWith($api::ENDPOINT_PRODUCTION, $endpoint);
         $this->assertStringEndsWith($parameter, $endpoint);
     }
@@ -161,7 +159,6 @@ class ApiTest extends TestCase
             'sandbox' => false,
         ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
-        $this->assertIsString($api->getEndpoint());
         $this->assertStringStartsWith($api::ENDPOINT_PRODUCTION, $api->getEndpoint());
     }
 
@@ -176,7 +173,6 @@ class ApiTest extends TestCase
             'sandbox' => true,
         ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
-        $this->assertIsString($api->getEndpoint());
         $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $api->getEndpoint());
     }
 
