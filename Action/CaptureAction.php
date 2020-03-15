@@ -13,6 +13,7 @@ use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
+use Payum\Core\Storage\IdentityInterface;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
@@ -95,6 +96,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess;
+            ($request->getModel() instanceof \ArrayAccess ||
+            $request->getModel() instanceof IdentityInterface);
     }
 }
