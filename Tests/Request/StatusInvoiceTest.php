@@ -2,7 +2,7 @@
 namespace IlCleme\Tinkl\Tests\Request;
 
 use IlCleme\Tinkl\Request\StatusInvoice;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class StatusInvoiceTest extends TestCase
 {
