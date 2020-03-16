@@ -1,25 +1,41 @@
 # Payum Tinkl Gateway
 
-Queso gateway di payum aggiunge la possibilità a chi lo utilizza di ricevere pagamenti in bitcoin sfruttando le API di Tinkl
-Tinkl è un servizio che fornisce un API e permette di ricevere un pagamento in bitcoine convertirlo immediatamente in valuta FIAT.
+This payum extension provides Tinkl payment integration. Tinkl is a gateway that provide ability to pay in bitcoin. 
 
-1. Installa il gateway
+1. Install gateway
 
 ```bash
 $ composer require ilcleme/payum-tinkl
 ```
-L'estensione dipende strettamente da Payum, quindi una volta installato tramite composer va configurato per essere usufruito da payum.
-Per aggiungerlo ai gateway di payum è necessario segiure questi passi:
-
-1. Aggiunta gateway a payum
+The gateway need to be configured to be includes in payum gateways.
+To add the the gateway on payum you can use the instructions above.
 
 ```php
 <?php
+//config.php
+include_once "vendor/autoload.php";
 
-//SCRIPT PER GESTIRE AGGIUNTA DEL GATEWAY
+use Payum\Core\PayumBuilder;
+use Payum\Core\Payum;
+use Payum\Core\Model\Payment;
+
+$paymentClass = Payment::class;
+
+/** @var Payum $payum */
+$payum = (new PayumBuilder())
+    ->addDefaultStorages()
+    ->addGatewayFactory('tinkl', function ($config, $coreGatewayFactory){
+        return new \IlCleme\Tinkl\TinklGatewayFactory($config, $coreGatewayFactory);
+    })
+    ->addGateway('tinkl', [
+        'factory' => 'tinkl',
+        'clientId' => 'aClientId',
+        'token' => 'aToken',
+        'sandobx' => 'true', // switch to false to use in production environment
+    ])
+    ->getPayum();
+
 ```
-
-In questo momento il gateway è aggiuntoa payum, per testare la corretta gestione del gateway basta fare così:
 
 ## Test
 To run the package test you need to install the dev requirements (test tools) and run phpunit from the package folder
