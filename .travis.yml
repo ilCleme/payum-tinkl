@@ -3,7 +3,8 @@ php:
   - '7.1'
 install:
   - composer install
-script: composer test
+script:
+  - composer test
 branches:
   only:
   - dev
