@@ -9,4 +9,4 @@ script:
   - composer test
 branches:
   only:
-  - dev
+  - master

@@ -6,6 +6,7 @@ Take advantage of the [Tinkl](https://www.tinkl.it) service, which provides an A
 [![Total Downloads](https://poser.pugx.org/ilcleme/payum-tinkl/downloads)](https://packagist.org/packages/ilcleme/payum-tinkl)
 [![Latest Unstable Version](https://poser.pugx.org/ilcleme/payum-tinkl/v/unstable)](https://packagist.org/packages/ilcleme/payum-tinkl)
 [![License](https://poser.pugx.org/ilcleme/payum-tinkl/license)](https://packagist.org/packages/ilcleme/payum-tinkl)
+[![Build Status](https://travis-ci.org/ilCleme/payum-tinkl.svg?branch=master)](https://travis-ci.org/ilCleme/payum-tinkl)
 
 Requirements
 ------------
