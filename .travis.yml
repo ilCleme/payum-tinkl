@@ -1,4 +1,10 @@
 language: php
+php:
+  - '7.1'
+  - '7.2'
+install:
+  - ./bin/ci/install_dependencies.sh
+  - php vendor/vendors.php
 branches:
   only:
   - dev
