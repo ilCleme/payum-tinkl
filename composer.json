@@ -1,8 +1,8 @@
 {
     "name": "ilcleme/payum-tinkl",
-    "type": "project",
+    "type": "library",
     "description": "Tinkl's Payum extension. Pay with bitcoin",
-    "keywords": ["payment", "bitcoin", "payum"],
+    "keywords": ["payment", "bitcoin", "payum", "tinkl", "gateway"],
     "homepage": "https://ilcle.me",
     "license": "MIT",
     "authors": [
@@ -19,7 +19,7 @@
         "php-http/guzzle6-adapter": "^1.0"
     },
     "autoload": {
-        "psr-0": { "IlCleme\\Tinkl": "" }
+        "psr-4": { "IlCleme\\Tinkl": "" }
     },
     "target-dir": "IlCleme/Tinkl",
     "scripts": {

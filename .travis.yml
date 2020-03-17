@@ -4,7 +4,7 @@ php:
   - '7.2'
   - '7.3'
 install:
-  - composer install
+  - composer install --no-interaction --prefer-dist
 script:
   - composer test
 branches:
