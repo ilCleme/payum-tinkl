@@ -25,7 +25,7 @@ class CaptureActionTest extends GenericActionTest
             array(new $this->requestClass('foo')),
             array(new $this->requestClass(new \stdClass())),
             array($this->getMockForAbstractClass(Generic::class, array(array()))),
-            array($this->getMockForAbstractClass(IdentityInterface::class, array(array()))),
+            array($this->getMockForAbstractClass(IdentityInterface::class)),
         );
     }
     /**
