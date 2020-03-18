@@ -26,6 +26,6 @@
     },
     "target-dir": "IlCleme/Tinkl",
     "scripts": {
-      "test": "./vendor/bin/phpunit tests"
+      "test": "./vendor/bin/phpunit ./Tests"
     }
 }
