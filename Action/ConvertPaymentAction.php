@@ -3,12 +3,14 @@ namespace IlCleme\Tinkl\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Request\GetCurrency;
 
-class ConvertPaymentAction implements ActionInterface
+class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -24,8 +26,12 @@ class ConvertPaymentAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getSource();
 
+        $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
+        $divisor = pow(10, $currency->exp);
+
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
-        $details['price'] = $payment->getTotalAmount();
+        $details['divisor'] = $divisor;
+        $details['price'] = $payment->getTotalAmount() / $divisor;
         $details['currency'] = $payment->getCurrencyCode();
         $details['number'] = $payment->getNumber();
         $details['description'] = $payment->getDescription();

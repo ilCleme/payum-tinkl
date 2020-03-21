@@ -2,9 +2,11 @@
 namespace IlCleme\Tinkl\Tests\Action;
 
 use IlCleme\Tinkl\Action\ConvertPaymentAction;
+use Payum\Core\Action\GetCurrencyAction;
 use Payum\Core\Model\Payment;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
+use Payum\Core\Request\GetCurrency;
 use Payum\Core\Tests\GenericActionTest;
 use Payum\Core\Request\Convert;
 
@@ -47,6 +49,13 @@ class ConvertPaymentActionTest extends GenericActionTest
      */
     public function shouldCorrectlyConvertOrderToDetailsAndSetItBack()
     {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(GetCurrency::class))
+        ;
+
         $token = $this->createMock('Payum\Core\Security\TokenInterface');
         $order = new Payment();
         $order->setNumber('theNumber');
@@ -58,6 +67,7 @@ class ConvertPaymentActionTest extends GenericActionTest
 
         $action = new ConvertPaymentAction();
 
+        $action->setGateway($gatewayMock);
         $action->execute($convert = new Convert($order, 'array', $token));
 
         $details = $convert->getResult();
@@ -88,6 +98,13 @@ class ConvertPaymentActionTest extends GenericActionTest
      */
     public function shouldNotOverwriteAlreadySetExtraDetails()
     {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(GetCurrency::class))
+        ;
+
         $order = new Payment();
         $order->setCurrencyCode('USD');
         $order->setTotalAmount(123);
@@ -97,7 +114,7 @@ class ConvertPaymentActionTest extends GenericActionTest
         ));
 
         $action = new ConvertPaymentAction();
-
+        $action->setGateway($gatewayMock);
         $action->execute($convert = new Convert($order, 'array'));
 
         $details = $convert->getResult();
@@ -106,5 +123,40 @@ class ConvertPaymentActionTest extends GenericActionTest
 
         $this->assertArrayHasKey('test', $details);
         $this->assertEquals('testVal', $details['test']);
+    }
+
+    public function testIntPriceIsConvertToFloat()
+    {
+        $gatewayMock = $this->createMockGatewayToConvertPayment();
+
+        $order = new Payment();
+        $order->setCurrencyCode('USD');
+        $order->setTotalAmount(123);
+
+        $action = new ConvertPaymentAction();
+        $action->setGateway($gatewayMock);
+        $action->execute($convert = new Convert($order, 'array'));
+
+        $details = $convert->getResult();
+
+        $this->assertNotEmpty($details);
+        $this->assertArrayHasKey('price', $details);
+        $this->assertIsFloat($details['price']);
+    }
+
+    protected function createMockGatewayToConvertPayment()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(GetCurrency::class))
+            ->will($this->returnCallback(function (GetCurrency $request) use ($gatewayMock){
+                $action = new GetCurrencyAction();
+                $action->execute($request);
+            }))
+        ;
+
+        return $gatewayMock;
     }
 }

@@ -55,6 +55,7 @@ $payum = (new PayumBuilder())
 
 ```
 The expiry time of the Tinkl payment page can also be configured, simply enter it in the payment details, in this way:
+Every other parameters used by Tinkl will be calculated by the gateway itself.
 ```php
 <?php
 // prepare.php
@@ -67,12 +68,13 @@ $storage = $payum->getStorage($paymentClass);
 $payment = $storage->create();
 $payment->setNumber(uniqid());
 $payment->setCurrencyCode('EUR');
-$payment->setTotalAmount(0.5);
+$payment->setTotalAmount(0.5); // Price should be passed as float
+//$payment->setTotalAmount(500); // alternative can be pass as integer but multiplied by 100
 $payment->setDescription('A description');
 $payment->setClientId('anId');
 $payment->setClientEmail('foo@example.com');
 $payment->setDetails([
-    'time_limit' => 60 // Value accepted in range from 60 to 900 (1 to 15 minutes)
+    'time_limit' => 60 // Value accepted in range from 60 to 900 (1 to 15 minutes), default to 900
 ]);
 
 $storage->update($payment);
@@ -80,11 +82,15 @@ $captureToken = $payum->getTokenFactory()->createCaptureToken($gatewayName, $pay
 header("Location: ".$captureToken->getTargetUrl());
 ```
 
+## Roadmap
+The above feature will be included as soon as possible:
+
+- [ ] Deferred invoices
+
 ## Test
 To run the package test you need to install the dev requirements (test tools) and run phpunit from the package folder
 ```
-composer install --dev
-vendor/bin/phpunit tests
+composer test
 ```
 
 ## License
