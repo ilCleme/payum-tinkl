@@ -1,6 +1,6 @@
 # Payum Tinkl Gateway
 This payum gateway provides the functionality of receiving bitcoin payments for all your web applications. 
-Take advantage of the [Tinkl](https://www.tinkl.it) service, which provides an API to manage the payment in Bitcoin.
+Take advantage of the [tinkl.it](https://www.tinkl.it) service, which provides an API to manage the payment in Bitcoin.
 
 [![Latest Stable Version](https://poser.pugx.org/ilcleme/payum-tinkl/v/stable)](https://packagist.org/packages/ilcleme/payum-tinkl)
 [![Total Downloads](https://poser.pugx.org/ilcleme/payum-tinkl/downloads)](https://packagist.org/packages/ilcleme/payum-tinkl)
@@ -54,8 +54,8 @@ $payum = (new PayumBuilder())
     ->getPayum();
 
 ```
-The expiry time of the Tinkl payment page can also be configured, simply enter it in the payment details, in this way:
-Every other parameters used by Tinkl will be calculated by the gateway itself.
+The expiry time of the tinkl.it payment page can also be configured, simply enter it in the payment details, in this way:
+Every other parameters used by tinkl.it API  will be calculated by the gateway itself.
 ```php
 <?php
 // prepare.php
