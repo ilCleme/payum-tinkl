@@ -68,8 +68,7 @@ $storage = $payum->getStorage($paymentClass);
 $payment = $storage->create();
 $payment->setNumber(uniqid());
 $payment->setCurrencyCode('EUR');
-$payment->setTotalAmount(0.5); // Price should be passed as float
-//$payment->setTotalAmount(500); // alternative can be pass as integer but multiplied by 100
+$payment->setTotalAmount(500); // Price should be passed as integer but multiplied by 100
 $payment->setDescription('A description');
 $payment->setClientId('anId');
 $payment->setClientEmail('foo@example.com');
