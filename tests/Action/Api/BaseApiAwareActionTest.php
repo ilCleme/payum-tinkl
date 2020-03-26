@@ -1,5 +1,5 @@
 <?php
-namespace IlCleme\Tinkl\Tests\Action\Api;
+namespace IlCleme\Tinkl\Testssss\Action\Api;
 
 use PHPUnit\Framework\TestCase;
 

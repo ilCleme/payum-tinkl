@@ -1,5 +1,5 @@
 <?php
-namespace IlCleme\Tinkl\Tests\Action;
+namespace IlCleme\Tinkl\Testssss\Action;
 
 use IlCleme\Tinkl\Action\ConvertPaymentAction;
 use Payum\Core\Action\GetCurrencyAction;

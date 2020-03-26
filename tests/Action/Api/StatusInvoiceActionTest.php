@@ -1,20 +1,20 @@
 <?php
-namespace IlCleme\Tinkl\Tests\Action\Api;
+namespace IlCleme\Tinkl\Testssss\Action\Api;
 
-use IlCleme\Tinkl\Request\CreateInvoice;
+use IlCleme\Tinkl\Action\Api\StatusInvoiceAction;
+use IlCleme\Tinkl\Request\StatusInvoice;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
-use IlCleme\Tinkl\Action\Api\CreateInvoiceAction;
 use PHPUnit\Framework\TestCase;
 
-class CreateInvoiceActionTest extends TestCase
+class StatusInvoiceActionTest extends TestCase
 {
     /**
      * @test
      */
     public function shouldImplementActionInterface()
     {
-        $rc = new \ReflectionClass(CreateInvoiceAction::class);
+        $rc = new \ReflectionClass(StatusInvoiceAction::class);
 
         $this->assertTrue($rc->implementsInterface(ActionInterface::class));
     }
@@ -24,7 +24,7 @@ class CreateInvoiceActionTest extends TestCase
      */
     public function shouldImplementApiAwareInterface()
     {
-        $rc = new \ReflectionClass(CreateInvoiceAction::class);
+        $rc = new \ReflectionClass(StatusInvoiceAction::class);
 
         $this->assertTrue($rc->implementsInterface(ApiAwareInterface::class));
     }
@@ -34,9 +34,9 @@ class CreateInvoiceActionTest extends TestCase
      */
     public function shouldSupportCreateInvoiceRequestWithArrayAccessAsModel()
     {
-        $action = new CreateInvoiceAction();
+        $action = new StatusInvoiceAction();
 
-        $this->assertTrue($action->supports(new CreateInvoice($this->createMock('ArrayAccess'))));
+        $this->assertTrue($action->supports(new StatusInvoice($this->createMock('ArrayAccess'))));
     }
 
     /**
@@ -44,7 +44,7 @@ class CreateInvoiceActionTest extends TestCase
      */
     public function shouldNotSupportAnythingNotAuthorizeTokenRequest()
     {
-        $action = new CreateInvoiceAction();
+        $action = new StatusInvoiceAction();
 
         $this->assertFalse($action->supports(new \stdClass()));
     }
@@ -57,12 +57,12 @@ class CreateInvoiceActionTest extends TestCase
         $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
-            ->method('createInvoice');
+            ->method('getStatusInvoice');
 
-        $action = new CreateInvoiceAction();
+        $action = new StatusInvoiceAction();
         $action->setApi($apiMock);
 
-        $request = new CreateInvoice(new \ArrayObject());
+        $request = new StatusInvoice(new \ArrayObject());
 
         $action->execute($request);
     }

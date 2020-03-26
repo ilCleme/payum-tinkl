@@ -1,5 +1,5 @@
 <?php
-namespace IlCleme\Tinkl\Tests\Request;
+namespace IlCleme\Tinkl\Testssss\Request;
 
 use IlCleme\Tinkl\Request\CreateInvoice;
 use PHPUnit\Framework\TestCase;
