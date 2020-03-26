@@ -25,6 +25,6 @@
       "psr-4": { "IlCleme\\Tinkl\\Tests\\": "tests/" }
     },
     "scripts": {
-      "test": "./vendor/bin/phpunit"
+      "tests": "./vendor/bin/phpunit"
     }
 }
