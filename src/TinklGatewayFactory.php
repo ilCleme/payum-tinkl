@@ -15,7 +15,7 @@ use Payum\Core\GatewayFactory;
 class TinklGatewayFactory extends GatewayFactory
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function populateConfig(ArrayObject $config)
     {

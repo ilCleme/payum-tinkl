@@ -20,7 +20,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     use GatewayAwareTrait, GenericTokenFactoryAwareTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Capture $request
      */
@@ -36,12 +36,13 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         if ($model->get('status') == 'pending') {
             $this->capturePendingRequest($request, $model);
+
             return;
         }
     }
 
     /**
-     * Execute required operation for new request
+     * Execute required operation for new request.
      *
      * @param Capture $request
      * @param ArrayObject $model
@@ -66,7 +67,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     }
 
     /**
-     * Execute operation for pending request
+     * Execute operation for pending request.
      *
      * @param Capture $request
      * @param ArrayObject $model
@@ -90,7 +91,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {

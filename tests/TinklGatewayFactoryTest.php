@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss;
 
 use IlCleme\Tinkl\TinklGatewayFactory;
@@ -36,7 +37,7 @@ class TinklGatewayFactoryTest extends TestCase
     {
         $coreGatewayFactory = $this->createMock(GatewayFactoryInterface::class);
 
-        $factory = new TinklGatewayFactory(array(), $coreGatewayFactory);
+        $factory = new TinklGatewayFactory([], $coreGatewayFactory);
 
         $this->assertAttributeSame($coreGatewayFactory, 'coreGatewayFactory', $factory);
     }
@@ -48,7 +49,7 @@ class TinklGatewayFactoryTest extends TestCase
     {
         $factory = new TinklGatewayFactory();
 
-        $gateway = $factory->create(array('clientId' => 'anId', 'token' => 'aToken'));
+        $gateway = $factory->create(['clientId' => 'anId', 'token' => 'aToken']);
 
         $this->assertInstanceOf('Payum\Core\Gateway', $gateway);
 
@@ -66,7 +67,7 @@ class TinklGatewayFactoryTest extends TestCase
     {
         $factory = new TinklGatewayFactory();
 
-        $gateway = $factory->create(array('payum.api' => new \stdClass()));
+        $gateway = $factory->create(['payum.api' => new \stdClass()]);
 
         $this->assertInstanceOf('Payum\Core\Gateway', $gateway);
 
@@ -95,10 +96,10 @@ class TinklGatewayFactoryTest extends TestCase
      */
     public function shouldAddDefaultConfigPassedInConstructorWhileCreatingGatewayConfig()
     {
-        $factory = new TinklGatewayFactory(array(
+        $factory = new TinklGatewayFactory([
             'foo' => 'fooVal',
             'bar' => 'barVal',
-        ));
+        ]);
 
         $config = $factory->createConfig();
 
@@ -123,7 +124,7 @@ class TinklGatewayFactoryTest extends TestCase
         $this->assertInternalType('array', $config);
 
         $this->assertArrayHasKey('payum.default_options', $config);
-        $this->assertEquals(array('clientId' => null, 'token' => null, 'version' => 'v1', 'sandbox' => true, 'deferred' => false), $config['payum.default_options']);
+        $this->assertEquals(['clientId' => null, 'token' => null, 'version' => 'v1', 'sandbox' => true, 'deferred' => false], $config['payum.default_options']);
     }
 
     /**

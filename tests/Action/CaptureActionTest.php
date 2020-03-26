@@ -1,14 +1,15 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action;
 
 use IlCleme\Tinkl\Action\CaptureAction;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
+use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Generic;
 use Payum\Core\Storage\IdentityInterface;
 use Payum\Core\Tests\GenericActionTest;
-use \Payum\Core\Reply\HttpRedirect;
 
 class CaptureActionTest extends GenericActionTest
 {
@@ -18,16 +19,17 @@ class CaptureActionTest extends GenericActionTest
 
     public function provideNotSupportedRequests()
     {
-        return array(
-            array('foo'),
-            array(array('foo')),
-            array(new \stdClass()),
-            array(new $this->requestClass('foo')),
-            array(new $this->requestClass(new \stdClass())),
-            array($this->getMockForAbstractClass(Generic::class, array(array()))),
-            array($this->getMockForAbstractClass(IdentityInterface::class)),
-        );
+        return [
+            ['foo'],
+            [['foo']],
+            [new \stdClass()],
+            [new $this->requestClass('foo')],
+            [new $this->requestClass(new \stdClass())],
+            [$this->getMockForAbstractClass(Generic::class, [[]])],
+            [$this->getMockForAbstractClass(IdentityInterface::class)],
+        ];
     }
+
     /**
      * @test
      */
@@ -58,7 +60,6 @@ class CaptureActionTest extends GenericActionTest
                 'gatewayName',
                 $this->identicalTo($identityMock)
             )->willReturn($tokenMock);
-        ;
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -70,15 +71,14 @@ class CaptureActionTest extends GenericActionTest
                 $model['status'] = 'statusVal';
                 $model['url'] = 'aUrl';
                 $request->setModel($model);
-            }))
-        ;
+            }));
 
         $request = new Capture($tokenMock);
         $request->setModel([]);
         $action = new CaptureAction();
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericTokenFactory);
-        try{
+        try {
             $action->execute($request);
         } catch (HttpRedirect $httpRedirect) {
             $this->assertInstanceOf(HttpRedirect::class, $httpRedirect);
@@ -106,8 +106,7 @@ class CaptureActionTest extends GenericActionTest
                 $model['status'] = 'pending';
                 $model['invoice'] = 'fooData';
                 $request->setModel($model);
-            }))
-        ;
+            }));
 
         $request = new Capture(['status' => 'pending']);
         $action = new CaptureAction();
@@ -117,7 +116,6 @@ class CaptureActionTest extends GenericActionTest
         $this->assertArrayHasKey('status', $request->getModel());
         $this->assertArrayHasKey('invoice', $request->getModel());
         $this->assertEquals('fooData', $request->getModel()['invoice']);
-
     }
 
     /**

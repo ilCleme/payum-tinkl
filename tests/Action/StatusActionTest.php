@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action;
 
 use IlCleme\Tinkl\Action\StatusAction;
@@ -48,7 +49,7 @@ class StatusActionTest extends GenericActionTest
         $model = new ArrayObject();
         $request = new $this->requestClass($model);
 
-        foreach ($this->pendingStatus as $status){
+        foreach ($this->pendingStatus as $status) {
             $model->replace(['status' => $status]);
             $request->setModel($model);
             $this->action->execute($request);

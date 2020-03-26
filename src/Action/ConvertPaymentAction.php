@@ -1,13 +1,14 @@
 <?php
+
 namespace IlCleme\Tinkl\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\GetCurrency;
 
 class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
@@ -15,7 +16,7 @@ class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
     use GatewayAwareTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Convert $request
      */
@@ -42,14 +43,13 @@ class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {
         return
             $request instanceof Convert &&
             $request->getSource() instanceof PaymentInterface &&
-            $request->getTo() == 'array'
-        ;
+            $request->getTo() == 'array';
     }
 }

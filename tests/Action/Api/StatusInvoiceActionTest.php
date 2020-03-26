@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action\Api;
 
 use IlCleme\Tinkl\Action\Api\StatusInvoiceAction;
@@ -66,7 +67,6 @@ class StatusInvoiceActionTest extends TestCase
 
         $action->execute($request);
     }
-
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|\Payum\Paypal\ExpressCheckout\Nvp\Api
