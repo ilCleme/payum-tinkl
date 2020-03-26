@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Request;
 
 use IlCleme\Tinkl\Request\StatusInvoice;
@@ -8,16 +9,15 @@ class StatusInvoiceTest extends TestCase
 {
     public static function provideDifferentPhpTypes()
     {
-        return array(
-            'object' => array(new \stdClass()),
-            'int' => array(5),
-            'float' => array(5.5),
-            'string' => array('foo'),
-            'boolean' => array(false),
-            'resource' => array(tmpfile()),
-        );
+        return [
+            'object' => [new \stdClass()],
+            'int' => [5],
+            'float' => [5.5],
+            'string' => ['foo'],
+            'boolean' => [false],
+            'resource' => [tmpfile()],
+        ];
     }
-
 
     /**
      * @test
@@ -57,7 +57,7 @@ class StatusInvoiceTest extends TestCase
     public function shouldAllowSetModelAndGetIt($phpType)
     {
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array(123321));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [123321]);
 
         $request->setModel($phpType);
 
@@ -72,7 +72,7 @@ class StatusInvoiceTest extends TestCase
     public function shouldAllowGetModelSetInConstructor($phpType)
     {
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($phpType));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$phpType]);
 
         $this->assertEquals($phpType, $request->getModel());
     }
@@ -85,7 +85,7 @@ class StatusInvoiceTest extends TestCase
         $tokenMock = $this->createMock('Payum\Core\Security\TokenInterface');
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($tokenMock));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$tokenMock]);
 
         $this->assertSame($tokenMock, $request->getModel());
         $this->assertSame($tokenMock, $request->getToken());
@@ -96,10 +96,10 @@ class StatusInvoiceTest extends TestCase
      */
     public function shouldConvertArrayToArrayObjectInConstructor()
     {
-        $model = array('foo' => 'bar');
+        $model = ['foo' => 'bar'];
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($model));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$model]);
 
         $this->assertInstanceOf('ArrayObject', $request->getModel());
         $this->assertEquals($model, (array) $request->getModel());
@@ -111,9 +111,9 @@ class StatusInvoiceTest extends TestCase
     public function shouldConvertArrayToArrayObjectSetWithSetter()
     {
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array(123321));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [123321]);
 
-        $model = array('foo' => 'bar');
+        $model = ['foo' => 'bar'];
 
         $request->setModel($model);
 
@@ -129,7 +129,7 @@ class StatusInvoiceTest extends TestCase
         /** @var Generic $request */
         $token = $this->createMock('Payum\Core\Security\TokenInterface');
 
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($token));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$token]);
 
         $this->assertNull($request->getFirstModel());
     }
@@ -140,9 +140,9 @@ class StatusInvoiceTest extends TestCase
     public function shouldNotSetIdentityAsFirstModelOnConstruct()
     {
         /** @var Generic $request */
-        $identity = $this->createMock('Payum\Core\Storage\IdentityInterface', array(), array(), '', false);
+        $identity = $this->createMock('Payum\Core\Storage\IdentityInterface', [], [], '', false);
 
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($identity));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$identity]);
 
         $this->assertNull($request->getFirstModel());
     }
@@ -155,7 +155,7 @@ class StatusInvoiceTest extends TestCase
         $model = new \stdClass();
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($model));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$model]);
 
         $this->assertSame($model, $request->getFirstModel());
     }
@@ -168,7 +168,7 @@ class StatusInvoiceTest extends TestCase
         $token = $this->createMock('Payum\Core\Security\TokenInterface');
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array(null));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [null]);
         $request->setModel($token);
 
         $this->assertNull($request->getFirstModel());
@@ -179,10 +179,10 @@ class StatusInvoiceTest extends TestCase
      */
     public function shouldNotSetIdentityAsFirstModelOnSetModel()
     {
-        $identity = $this->createMock('Payum\Core\Storage\IdentityInterface', array(), array(), '', false);
+        $identity = $this->createMock('Payum\Core\Storage\IdentityInterface', [], [], '', false);
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array(null));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [null]);
         $request->setModel($identity);
 
         $this->assertNull($request->getFirstModel());
@@ -196,7 +196,7 @@ class StatusInvoiceTest extends TestCase
         $model = new \stdClass();
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array(null));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [null]);
         $request->setModel($model);
 
         $this->assertSame($model, $request->getFirstModel());
@@ -211,7 +211,7 @@ class StatusInvoiceTest extends TestCase
         $secondModel = new \stdClass();
 
         /** @var Generic $request */
-        $request = $this->getMockForAbstractClass(StatusInvoice::class, array($firstModel));
+        $request = $this->getMockForAbstractClass(StatusInvoice::class, [$firstModel]);
         $request->setModel($secondModel);
 
         $this->assertSame($firstModel, $request->getFirstModel());

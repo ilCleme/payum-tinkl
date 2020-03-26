@@ -1,14 +1,14 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action;
 
 use IlCleme\Tinkl\Action\ConvertPaymentAction;
 use Payum\Core\Action\GetCurrencyAction;
 use Payum\Core\Model\Payment;
 use Payum\Core\Model\PaymentInterface;
-use Payum\Core\Model\Token;
+use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
 use Payum\Core\Tests\GenericActionTest;
-use Payum\Core\Request\Convert;
 
 class ConvertPaymentActionTest extends GenericActionTest
 {
@@ -53,8 +53,7 @@ class ConvertPaymentActionTest extends GenericActionTest
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(GetCurrency::class))
-        ;
+            ->with($this->isInstanceOf(GetCurrency::class));
 
         $token = $this->createMock('Payum\Core\Security\TokenInterface');
         $order = new Payment();
@@ -102,16 +101,15 @@ class ConvertPaymentActionTest extends GenericActionTest
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(GetCurrency::class))
-        ;
+            ->with($this->isInstanceOf(GetCurrency::class));
 
         $order = new Payment();
         $order->setCurrencyCode('USD');
         $order->setTotalAmount(123);
         $order->setDescription('the description');
-        $order->setDetails(array(
+        $order->setDetails([
             'test' => 'testVal',
-        ));
+        ]);
 
         $action = new ConvertPaymentAction();
         $action->setGateway($gatewayMock);
@@ -151,11 +149,10 @@ class ConvertPaymentActionTest extends GenericActionTest
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(GetCurrency::class))
-            ->will($this->returnCallback(function (GetCurrency $request) use ($gatewayMock){
+            ->will($this->returnCallback(function (GetCurrency $request) use ($gatewayMock) {
                 $action = new GetCurrencyAction();
                 $action->execute($request);
-            }))
-        ;
+            }));
 
         return $gatewayMock;
     }

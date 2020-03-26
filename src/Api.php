@@ -1,11 +1,12 @@
 <?php
+
 namespace IlCleme\Tinkl;
 
 use Http\Message\MessageFactory;
-use Payum\Core\Exception\Http\HttpException;
-use Payum\Core\HttpClientInterface;
-use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\Http\HttpException;
+use Payum\Core\Exception\InvalidArgumentException;
+use Payum\Core\HttpClientInterface;
 
 class Api
 {
@@ -39,10 +40,10 @@ class Api
     {
         $options = ArrayObject::ensureArrayObject($options);
         $options->defaults($this->options);
-        $options->validateNotEmpty(array(
+        $options->validateNotEmpty([
             'clientId',
             'token',
-        ));
+        ]);
 
         if (false == is_bool($options['sandbox'])) {
             throw new InvalidArgumentException('The boolean sandbox option must be set.');
@@ -105,10 +106,10 @@ class Api
      */
     protected function getCredential()
     {
-       return [
-           'X-AUTH-TOKEN' => $this->options['token'],
-           'X-CLIENT-ID' => $this->options['client_id']
-       ];
+        return [
+            'X-AUTH-TOKEN' => $this->options['token'],
+            'X-CLIENT-ID' => $this->options['client_id'],
+        ];
     }
 
     /**

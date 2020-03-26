@@ -1,10 +1,11 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action\Api;
 
+use IlCleme\Tinkl\Action\Api\CreateInvoiceAction;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
-use IlCleme\Tinkl\Action\Api\CreateInvoiceAction;
 use PHPUnit\Framework\TestCase;
 
 class CreateInvoiceActionTest extends TestCase
@@ -66,7 +67,6 @@ class CreateInvoiceActionTest extends TestCase
 
         $action->execute($request);
     }
-
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|\Payum\Paypal\ExpressCheckout\Nvp\Api

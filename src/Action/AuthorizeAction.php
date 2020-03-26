@@ -1,19 +1,20 @@
 <?php
+
 namespace IlCleme\Tinkl\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Authorize;
-use Payum\Core\Exception\RequestNotSupportedException;
 
 class AuthorizeAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Authorize $request
      */
@@ -27,13 +28,12 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {
         return
             $request instanceof Authorize &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

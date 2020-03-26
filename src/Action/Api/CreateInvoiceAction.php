@@ -1,9 +1,10 @@
 <?php
+
 namespace IlCleme\Tinkl\Action\Api;
 
 use IlCleme\Tinkl\Request\CreateInvoice;
-use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\RequestNotSupportedException;
 
 class CreateInvoiceAction extends BaseApiAwareAction
 {
@@ -26,7 +27,7 @@ class CreateInvoiceAction extends BaseApiAwareAction
     /**
      * @param mixed $request
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($request)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action;
 
 use IlCleme\Tinkl\Action\NotifyAction;
@@ -21,8 +22,7 @@ class NotifyActionTest extends GenericActionTest
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(GetHttpRequest::class))
-        ;
+            ->with($this->isInstanceOf(GetHttpRequest::class));
 
         $action = new NotifyAction();
         $action->setGateway($gatewayMock);

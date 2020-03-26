@@ -1,4 +1,5 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss\Action\Api;
 
 use PHPUnit\Framework\TestCase;
@@ -66,6 +67,6 @@ class BaseApiAwareActionTest extends TestCase
      */
     protected function createApiMock()
     {
-        return $this->createMock('IlCleme\Tinkl\Api', array(), array(), '', false);
+        return $this->createMock('IlCleme\Tinkl\Api', [], [], '', false);
     }
 }

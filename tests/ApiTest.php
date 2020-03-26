@@ -1,12 +1,13 @@
 <?php
+
 namespace IlCleme\Tinkl\Testssss;
 
-use IlCleme\Tinkl\Api;
-use PHPUnit\Framework\TestCase;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
-use Payum\Core\HttpClientInterface;
-use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Psr7\Response;
+use Http\Message\MessageFactory\GuzzleMessageFactory;
+use IlCleme\Tinkl\Api;
+use Payum\Core\HttpClientInterface;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 
 class ApiTest extends TestCase
 {
@@ -18,13 +19,13 @@ class ApiTest extends TestCase
         $client = $this->createHttpClientMock();
         $factory = $this->createHttpMessageFactory();
 
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'version' => 'v1',
             'deferred' => false,
             'sandbox' => true,
-        ), $client, $factory);
+        ], $client, $factory);
 
         $this->assertAttributeSame($client, 'client', $api);
         $this->assertAttributeSame($factory, 'messageFactory', $api);
@@ -38,7 +39,7 @@ class ApiTest extends TestCase
      */
     public function throwIfRequiredOptionsNotSetInConstructor()
     {
-        new Api(array(), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        new Api([], $this->createHttpClientMock(), $this->createHttpMessageFactory());
     }
 
     /**
@@ -49,11 +50,11 @@ class ApiTest extends TestCase
      */
     public function throwIfSandboxOptionNotIsBool()
     {
-        new Api(array(
+        new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'sandbox' => 'notBoolean',
-        ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        ], $this->createHttpClientMock(), $this->createHttpMessageFactory());
     }
 
     /**
@@ -71,18 +72,17 @@ class ApiTest extends TestCase
                 $testCase->assertEquals('http://api.tinkl.it/v1/invoices', $request->getUri()->__toString());
 
                 return new Response(200, [], $request->getBody());
-            }))
-        ;
+            }));
 
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'version' => 'v1',
             'deferred' => false,
             'sandbox' => false,
-        ), $clientMock, $this->createHttpMessageFactory());
+        ], $clientMock, $this->createHttpMessageFactory());
 
-        $api->createInvoice(array());
+        $api->createInvoice([]);
     }
 
     /**
@@ -100,18 +100,17 @@ class ApiTest extends TestCase
                 $testCase->assertEquals('http://api-staging.tinkl.it/v1/invoices', $request->getUri()->__toString());
 
                 return new Response(200, [], $request->getBody());
-            }))
-        ;
+            }));
 
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'version' => 'v1',
             'deferred' => false,
             'sandbox' => true,
-        ), $clientMock, $this->createHttpMessageFactory());
+        ], $clientMock, $this->createHttpMessageFactory());
 
-        $api->createInvoice(array());
+        $api->createInvoice([]);
     }
 
     /**
@@ -119,11 +118,11 @@ class ApiTest extends TestCase
      */
     public function getEndpointWithRightSegmentOnProductionEnvironment()
     {
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'sandbox' => true,
-        ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        ], $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
         $parameter = 'test/test/';
         $endpoint = $api->getEndpoint($parameter);
@@ -136,11 +135,11 @@ class ApiTest extends TestCase
      */
     public function getEndpointWithRightSegmentOnSandboxEnvironment()
     {
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'sandbox' => false,
-        ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        ], $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
         $parameter = 'test/test/';
         $endpoint = $api->getEndpoint($parameter);
@@ -153,11 +152,11 @@ class ApiTest extends TestCase
      */
     public function getEndpointReturnAStringStartsWithProductionEndpoint()
     {
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'sandbox' => false,
-        ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        ], $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
         $this->assertStringStartsWith($api::ENDPOINT_PRODUCTION, $api->getEndpoint());
     }
@@ -167,11 +166,11 @@ class ApiTest extends TestCase
      */
     public function getEndpointReturnAStringStartsWithSandboxEndpoint()
     {
-        $api = new Api(array(
+        $api = new Api([
             'clientId' => 'aclientId',
             'token' => 'aToken',
             'sandbox' => true,
-        ), $this->createHttpClientMock(), $this->createHttpMessageFactory());
+        ], $this->createHttpClientMock(), $this->createHttpMessageFactory());
 
         $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $api->getEndpoint());
     }
@@ -203,8 +202,7 @@ class ApiTest extends TestCase
             ->method('send')
             ->will($this->returnCallback(function (RequestInterface $request) {
                 return new Response(200, [], $request->getBody());
-            }))
-        ;
+            }));
 
         return $clientMock;
     }
