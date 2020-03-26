@@ -92,6 +92,9 @@ To run the package test you need to install the dev requirements (test tools) an
 composer test
 ```
 
-## License
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Please make sure to update tests as appropriate.
 
+## License
 This extension is released under the [MIT License](LICENSE).
