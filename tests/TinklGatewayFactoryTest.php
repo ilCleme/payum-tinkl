@@ -1,6 +1,6 @@
 <?php
 
-namespace IlCleme\Tinkl\Testssss;
+namespace IlCleme\Tinkl\Tests;
 
 use IlCleme\Tinkl\TinklGatewayFactory;
 use Payum\Core\CoreGatewayFactory;

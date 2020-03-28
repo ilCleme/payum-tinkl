@@ -1,6 +1,6 @@
 <?php
 
-namespace IlCleme\Tinkl\Testssss\Action;
+namespace IlCleme\Tinkl\Tests\Action;
 
 use IlCleme\Tinkl\Action\CaptureAction;
 use IlCleme\Tinkl\Request\CreateInvoice;

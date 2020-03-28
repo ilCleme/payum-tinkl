@@ -1,6 +1,6 @@
 <?php
 
-namespace IlCleme\Tinkl\Testssss\Request;
+namespace IlCleme\Tinkl\Tests\Request;
 
 use IlCleme\Tinkl\Request\StatusInvoice;
 use PHPUnit\Framework\TestCase;

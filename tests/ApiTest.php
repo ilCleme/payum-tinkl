@@ -1,6 +1,6 @@
 <?php
 
-namespace IlCleme\Tinkl\Testssss;
+namespace IlCleme\Tinkl\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Http\Message\MessageFactory\GuzzleMessageFactory;

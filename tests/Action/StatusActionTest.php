@@ -1,6 +1,6 @@
 <?php
 
-namespace IlCleme\Tinkl\Testssss\Action;
+namespace IlCleme\Tinkl\Tests\Action;
 
 use IlCleme\Tinkl\Action\StatusAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
