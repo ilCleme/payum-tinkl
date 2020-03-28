@@ -59,6 +59,17 @@ class Api
         return $this->doRequest('POST', $this->getEndpoint('invoices'), $parameter);
     }
 
+    public function activateInvoice(array $parameter)
+    {
+        $activationUrl = array_key_exists('activation_url', $parameter) ? $parameter['activation_url'] : null;
+        if (!$activationUrl){
+            $guidInvoice = array_key_exists('guid', $parameter) ? $parameter['guid'] : null;
+            $activationUrl = $this->getEndpoint('invoices/'.$guidInvoice).'/activate';
+        }
+
+        return $this->doRequest('PATCH', $activationUrl, $parameter);
+    }
+
     public function getStatusInvoice(array $parameter)
     {
         $guidInvoice = array_key_exists('guid', $parameter) ? $parameter['guid'] : null;

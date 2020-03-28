@@ -2,6 +2,7 @@
 
 namespace IlCleme\Tinkl;
 
+use IlCleme\Tinkl\Action\Api\ActivateInvoiceAction;
 use IlCleme\Tinkl\Action\Api\CreateInvoiceAction;
 use IlCleme\Tinkl\Action\Api\StatusInvoiceAction;
 use IlCleme\Tinkl\Action\AuthorizeAction;
@@ -29,7 +30,12 @@ class TinklGatewayFactory extends GatewayFactory
             'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.api.create_invoice' => new CreateInvoiceAction(),
             'payum.action.api.status_invoice' => new StatusInvoiceAction(),
+            'payum.action.api.activate_invoice' => new ActivateInvoiceAction(),
         ]);
+
+        $config['payum.paths'] = array_replace([
+            'PayumTinkl' => __DIR__.'/Resources/views',
+        ], $config['payum.paths'] ?: []);
 
         if (false == $config['payum.api']) {
             $config['payum.default_options'] = [

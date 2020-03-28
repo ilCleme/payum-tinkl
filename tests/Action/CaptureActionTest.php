@@ -33,45 +33,14 @@ class CaptureActionTest extends GenericActionTest
     /**
      * @test
      */
-    public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirect()
+    public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToUrl()
     {
-        $tokenMock = $this->createTokenMock();
-        $tokenMock
-            ->expects($this->once())
-            ->method('getGatewayName')
-            ->willReturn('gatewayName');
-
-        $identityMock = $this->getMockClass(IdentityInterface::class);
-        $tokenMock
-            ->expects($this->once())
-            ->method('getDetails')
-            ->willReturn($identityMock);
-
-        $tokenMock
-            ->expects($this->exactly(2))
-            ->method('getTargetUrl')
-            ->willReturn('notifyUrl', 'captureUrl');
-
-        $genericTokenFactory = $this->createGenericTokenFactoryMock();
-        $genericTokenFactory
-            ->expects($this->once())
-            ->method('createNotifyToken')
-            ->with(
-                'gatewayName',
-                $this->identicalTo($identityMock)
-            )->willReturn($tokenMock);
-
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(CreateInvoice::class))
-            ->will($this->returnCallback(function (CreateInvoice $request) {
-                $model = $request->getModel();
-                $model['status'] = 'statusVal';
-                $model['url'] = 'aUrl';
-                $request->setModel($model);
-            }));
+        list($tokenMock, $genericTokenFactory, $gatewayMock) = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
+            $model = $request->getModel();
+            $model['status'] = 'pending';
+            $model['url'] = 'aUrl';
+            $request->setModel($model);
+        }));
 
         $request = new Capture($tokenMock);
         $request->setModel([]);
@@ -82,11 +51,40 @@ class CaptureActionTest extends GenericActionTest
             $action->execute($request);
         } catch (HttpRedirect $httpRedirect) {
             $this->assertInstanceOf(HttpRedirect::class, $httpRedirect);
+            $this->assertArrayHasKey('status', $request->getModel());
             $this->assertEquals('aUrl', $httpRedirect->getUrl());
             $this->assertArrayHasKey('notification_url', $request->getModel());
             $this->assertArrayHasKey('redirect_url', $request->getModel());
             $this->assertArrayHasKey('url', $request->getModel());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToRedirectUrl()
+    {
+        list($tokenMock, $genericTokenFactory, $gatewayMock) = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
+            $model = $request->getModel();
+            $model['status'] = 'deferred';
+            $model['url'] = 'captureUrl';
+            $request->setModel($model);
+        }));
+
+        $request = new Capture($tokenMock);
+        $request->setModel([]);
+        $action = new CaptureAction();
+        $action->setGateway($gatewayMock);
+        $action->setGenericTokenFactory($genericTokenFactory);
+        try {
+            $action->execute($request);
+        } catch (HttpRedirect $httpRedirect) {
+            $this->assertInstanceOf(HttpRedirect::class, $httpRedirect);
             $this->assertArrayHasKey('status', $request->getModel());
+            $this->assertEquals('captureUrl', $httpRedirect->getUrl());
+            $this->assertArrayHasKey('notification_url', $request->getModel());
+            $this->assertArrayHasKey('redirect_url', $request->getModel());
+            $this->assertArrayHasKey('url', $request->getModel());
         }
     }
 
@@ -132,5 +130,43 @@ class CaptureActionTest extends GenericActionTest
     protected function createGenericTokenFactoryMock()
     {
         return $this->createMock('\Payum\Core\Security\GenericTokenFactoryInterface');
+    }
+
+    protected function getMockForCapture($returnResponseGatewayMock)
+    {
+        $tokenMock = $this->createTokenMock();
+        $tokenMock
+            ->expects($this->once())
+            ->method('getGatewayName')
+            ->willReturn('gatewayName');
+
+        $identityMock = $this->getMockClass(IdentityInterface::class);
+        $tokenMock
+            ->expects($this->once())
+            ->method('getDetails')
+            ->willReturn($identityMock);
+
+        $tokenMock
+            ->expects($this->exactly(2))
+            ->method('getTargetUrl')
+            ->willReturn('notifyUrl', 'captureUrl');
+
+        $genericTokenFactory = $this->createGenericTokenFactoryMock();
+        $genericTokenFactory
+            ->expects($this->once())
+            ->method('createNotifyToken')
+            ->with(
+                'gatewayName',
+                $this->identicalTo($identityMock)
+            )->willReturn($tokenMock);
+
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(CreateInvoice::class))
+            ->will($returnResponseGatewayMock);
+
+        return [$tokenMock, $genericTokenFactory, $gatewayMock];
     }
 }
