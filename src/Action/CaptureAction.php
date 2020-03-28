@@ -110,9 +110,9 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             throw new HttpRedirect($model['url']);
         }
 
-        $this->gateway->execute($renderTemplate = new RenderTemplate('@PayumTinkl/Action/activate_deferred.html.twig', array(
+        $this->gateway->execute($renderTemplate = new RenderTemplate('@PayumTinkl/Action/activate_deferred.html.twig', [
             'model' => $model,
-        )));
+        ]));
 
         throw new HttpResponse($renderTemplate->getResult());
     }

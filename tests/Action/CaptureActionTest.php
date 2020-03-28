@@ -35,7 +35,7 @@ class CaptureActionTest extends GenericActionTest
      */
     public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToUrl()
     {
-        list($tokenMock, $genericTokenFactory, $gatewayMock) = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
+        [$tokenMock, $genericTokenFactory, $gatewayMock] = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
             $model = $request->getModel();
             $model['status'] = 'pending';
             $model['url'] = 'aUrl';
@@ -64,7 +64,7 @@ class CaptureActionTest extends GenericActionTest
      */
     public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToRedirectUrl()
     {
-        list($tokenMock, $genericTokenFactory, $gatewayMock) = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
+        [$tokenMock, $genericTokenFactory, $gatewayMock] = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
             $model = $request->getModel();
             $model['status'] = 'deferred';
             $model['url'] = 'captureUrl';
