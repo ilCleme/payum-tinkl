@@ -62,7 +62,7 @@ class Api
     public function activateInvoice(array $parameter)
     {
         $activationUrl = array_key_exists('activation_url', $parameter) ? $parameter['activation_url'] : null;
-        if (!$activationUrl){
+        if (! $activationUrl) {
             $guidInvoice = array_key_exists('guid', $parameter) ? $parameter['guid'] : null;
             $activationUrl = $this->getEndpoint('invoices/'.$guidInvoice).'/activate';
         }
