@@ -81,11 +81,6 @@ $captureToken = $payum->getTokenFactory()->createCaptureToken($gatewayName, $pay
 header("Location: ".$captureToken->getTargetUrl());
 ```
 
-## Roadmap
-The above feature will be included as soon as possible:
-
-- [ ] Deferred invoices
-
 ## Test
 To run the package test you need to install the dev requirements (test tools) and run phpunit from the package folder
 ```
