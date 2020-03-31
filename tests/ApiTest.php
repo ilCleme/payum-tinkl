@@ -5,6 +5,7 @@ namespace IlCleme\Tinkl\Tests;
 use GuzzleHttp\Psr7\Response;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
 use IlCleme\Tinkl\Api;
+use Payum\Core\Exception\Http\HttpException;
 use Payum\Core\HttpClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -176,6 +177,105 @@ class ApiTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function createInvoiceSuccessRequest()
+    {
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createSuccessHttpClientStub(), $this->createHttpMessageFactory());
+
+        $response = $api->createInvoice([]);
+
+        $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $api->getEndpoint());
+        $this->assertIsArray($response);
+    }
+
+    /**
+     * @test
+     */
+    public function createInvoiceErrorRequest()
+    {
+        $this->expectException(HttpException::class);
+
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createErrorHttpClientStub(), $this->createHttpMessageFactory());
+
+        $api->createInvoice([]);
+    }
+
+    /**
+     * @test
+     */
+    public function activateInvoiceSuccessRequest()
+    {
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createSuccessHttpClientStub(), $this->createHttpMessageFactory());
+
+        $response = $api->activateInvoice([]);
+
+        $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $api->getEndpoint());
+        $this->assertIsArray($response);
+    }
+
+    /**
+     * @test
+     */
+    public function activateInvoiceErrorRequest()
+    {
+        $this->expectException(HttpException::class);
+
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createErrorHttpClientStub(), $this->createHttpMessageFactory());
+
+        $api->activateInvoice([]);
+    }
+
+    /**
+     * @test
+     */
+    public function getStatusSuccessRequest()
+    {
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createSuccessHttpClientStub(), $this->createHttpMessageFactory());
+
+        $response = $api->getStatusInvoice([]);
+
+        $this->assertStringStartsWith($api::ENDPOINT_SANDBOX, $api->getEndpoint());
+        $this->assertIsArray($response);
+    }
+
+    /**
+     * @test
+     */
+    public function getStatusErrorRequest()
+    {
+        $this->expectException(HttpException::class);
+
+        $api = new Api([
+            'clientId' => 'aclientId',
+            'token' => 'aToken',
+            'sandbox' => true,
+        ], $this->createErrorHttpClientStub(), $this->createHttpMessageFactory());
+
+        $api->getStatusInvoice([]);
+    }
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|HttpClientInterface
      */
     protected function createHttpClientMock()
@@ -202,6 +302,22 @@ class ApiTest extends TestCase
             ->method('send')
             ->will($this->returnCallback(function (RequestInterface $request) {
                 return new Response(200, [], $request->getBody());
+            }));
+
+        return $clientMock;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|HttpClientInterface
+     */
+    protected function createErrorHttpClientStub()
+    {
+        $clientMock = $this->createHttpClientMock();
+        $clientMock
+            ->expects($this->any())
+            ->method('send')
+            ->will($this->returnCallback(function (RequestInterface $request) {
+                return new Response(401, [], $request->getBody());
             }));
 
         return $clientMock;
