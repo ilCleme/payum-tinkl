@@ -5,7 +5,6 @@ namespace IlCleme\Tinkl\Tests\Action;
 use IlCleme\Tinkl\Action\CaptureAction;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
-use Payum\Core\Exception\LogicException;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Generic;

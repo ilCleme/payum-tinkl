@@ -2,7 +2,6 @@
 
 namespace IlCleme\Tinkl\Action;
 
-use IlCleme\Tinkl\Request\ActivateInvoice;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
 use Payum\Core\Action\ActionInterface;
@@ -11,10 +10,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Capture;
-use Payum\Core\Request\GetHttpRequest;
-use Payum\Core\Request\RenderTemplate;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Storage\IdentityInterface;
@@ -73,7 +69,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         if ($model['url'] && $model['status'] == 'pending') {
             throw new HttpRedirect($model['url']);
-        } else if ($model['url'] && $model['status'] == 'deferred') {
+        } elseif ($model['url'] && $model['status'] == 'deferred') {
             throw new HttpRedirect($model['activation_page']);
         }
     }
