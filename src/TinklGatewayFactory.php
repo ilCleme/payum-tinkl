@@ -2,7 +2,6 @@
 
 namespace IlCleme\Tinkl;
 
-use IlCleme\Tinkl\Action\Api\ActivateInvoiceAction;
 use IlCleme\Tinkl\Action\Api\CreateInvoiceAction;
 use IlCleme\Tinkl\Action\Api\StatusInvoiceAction;
 use IlCleme\Tinkl\Action\AuthorizeAction;
