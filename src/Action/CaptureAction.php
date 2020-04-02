@@ -51,7 +51,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             $model['status'] = 'error';
             $model['errors'] = json_encode($tinklException->getMessage());
         }
-
     }
 
     /**

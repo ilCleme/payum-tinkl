@@ -5,7 +5,6 @@ namespace IlCleme\Tinkl;
 use Http\Message\MessageFactory;
 use IlCleme\Tinkl\Exception\TinklException;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Exception\Http\HttpException;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Core\HttpClientInterface;
 
