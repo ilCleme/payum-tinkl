@@ -82,7 +82,8 @@ header("Location: ".$captureToken->getTargetUrl());
 ```
 
 ## Test
-To run the package test you need to install the dev requirements (test tools) and run phpunit from the package folder
+To run the package test you need to install the dev requirements (test tools).
+Use this composer alias or run phpunit from test folder.
 ```
 composer test
 ```
