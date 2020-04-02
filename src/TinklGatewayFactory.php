@@ -30,7 +30,6 @@ class TinklGatewayFactory extends GatewayFactory
             'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.api.create_invoice' => new CreateInvoiceAction(),
             'payum.action.api.status_invoice' => new StatusInvoiceAction(),
-            'payum.action.api.activate_invoice' => new ActivateInvoiceAction(),
         ]);
 
         if (false == $config['payum.api']) {
