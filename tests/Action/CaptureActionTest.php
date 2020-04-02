@@ -5,6 +5,7 @@ namespace IlCleme\Tinkl\Tests\Action;
 use IlCleme\Tinkl\Action\CaptureAction;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Generic;
@@ -33,7 +34,7 @@ class CaptureActionTest extends GenericActionTest
     /**
      * @test
      */
-    public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToUrl()
+    public function testCaptureNewRequest()
     {
         [$tokenMock, $genericTokenFactory, $gatewayMock] = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
             $model = $request->getModel();
@@ -62,12 +63,13 @@ class CaptureActionTest extends GenericActionTest
     /**
      * @test
      */
-    public function testCaptureNewRequestOnModelWithEmptyStatusThrowHttpRedirectToRedirectUrl()
+    public function testCaptureNewRequestDeferred()
     {
         [$tokenMock, $genericTokenFactory, $gatewayMock] = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
             $model = $request->getModel();
             $model['status'] = 'deferred';
             $model['url'] = 'captureUrl';
+            $model['activation_page'] = 'activationUrl';
             $request->setModel($model);
         }));
 
@@ -81,7 +83,7 @@ class CaptureActionTest extends GenericActionTest
         } catch (HttpRedirect $httpRedirect) {
             $this->assertInstanceOf(HttpRedirect::class, $httpRedirect);
             $this->assertArrayHasKey('status', $request->getModel());
-            $this->assertEquals('captureUrl', $httpRedirect->getUrl());
+            $this->assertEquals('activationUrl', $httpRedirect->getUrl());
             $this->assertArrayHasKey('notification_url', $request->getModel());
             $this->assertArrayHasKey('redirect_url', $request->getModel());
             $this->assertArrayHasKey('url', $request->getModel());
@@ -114,6 +116,25 @@ class CaptureActionTest extends GenericActionTest
         $this->assertArrayHasKey('status', $request->getModel());
         $this->assertArrayHasKey('invoice', $request->getModel());
         $this->assertEquals('fooData', $request->getModel()['invoice']);
+    }
+
+    /**
+     * @test
+     */
+    public function testCaptureDeferredRequest()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $request = new Capture(['status' => 'deferred', 'activation_page' => 'activationPageUrl']);
+        $action = new CaptureAction();
+        $action->setGateway($gatewayMock);
+
+        try {
+            $action->execute($request);
+        } catch (HttpRedirect $exception) {
+            $this->assertEquals('activationPageUrl', $exception->getUrl());
+            $this->assertArrayHasKey('status', $request->getModel());
+            $this->assertEquals('deferred', $request->getModel()['status']);
+        }
     }
 
     /**

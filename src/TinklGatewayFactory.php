@@ -33,10 +33,6 @@ class TinklGatewayFactory extends GatewayFactory
             'payum.action.api.activate_invoice' => new ActivateInvoiceAction(),
         ]);
 
-        $config['payum.paths'] = array_replace([
-            'PayumTinkl' => __DIR__.'/Resources/views',
-        ], $config['payum.paths'] ?: []);
-
         if (false == $config['payum.api']) {
             $config['payum.default_options'] = [
                 'clientId' => null,

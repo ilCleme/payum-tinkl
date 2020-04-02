@@ -39,7 +39,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         }
 
         if ($model->get('status') == 'deferred') {
-            $this->captureDeferredRequest($request, $model);
+            $this->captureDeferredRequest($model);
 
             return;
         }
@@ -73,8 +73,8 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         if ($model['url'] && $model['status'] == 'pending') {
             throw new HttpRedirect($model['url']);
-        } else {
-            throw new HttpRedirect($model['redirect_url']);
+        } else if ($model['url'] && $model['status'] == 'deferred') {
+            throw new HttpRedirect($model['activation_page']);
         }
     }
 
@@ -96,25 +96,13 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     /**
      * Execute operation for pending request.
      *
-     * @param Capture $request
      * @param ArrayObject $model
      */
-    protected function captureDeferredRequest($request, $model)
+    protected function captureDeferredRequest($model)
     {
-        $getHttpRequest = new GetHttpRequest();
-        $this->gateway->execute($getHttpRequest);
-        if ($getHttpRequest->method == 'POST' && isset($getHttpRequest->request['activateIntent'])) {
-            $this->gateway->execute($activateInvoice = new ActivateInvoice($model));
-            $request->setModel($model = $activateInvoice->getModel());
-
-            throw new HttpRedirect($model['url']);
+        if (array_key_exists('activation_page', $model)) {
+            throw new HttpRedirect($model['activation_page']);
         }
-
-        $this->gateway->execute($renderTemplate = new RenderTemplate('@PayumTinkl/Action/activate_deferred.html.twig', [
-            'model' => $model,
-        ]));
-
-        throw new HttpResponse($renderTemplate->getResult());
     }
 
     /**
