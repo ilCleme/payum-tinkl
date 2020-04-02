@@ -5,7 +5,7 @@ namespace IlCleme\Tinkl\Tests;
 use GuzzleHttp\Psr7\Response;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
 use IlCleme\Tinkl\Api;
-use Payum\Core\Exception\Http\HttpException;
+use IlCleme\Tinkl\Exception\TinklException;
 use Payum\Core\HttpClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -198,7 +198,7 @@ class ApiTest extends TestCase
      */
     public function createInvoiceErrorRequest()
     {
-        $this->expectException(HttpException::class);
+        $this->expectException(TinklException::class);
 
         $api = new Api([
             'clientId' => 'aclientId',
@@ -231,7 +231,7 @@ class ApiTest extends TestCase
      */
     public function activateInvoiceErrorRequest()
     {
-        $this->expectException(HttpException::class);
+        $this->expectException(TinklException::class);
 
         $api = new Api([
             'clientId' => 'aclientId',
@@ -264,7 +264,7 @@ class ApiTest extends TestCase
      */
     public function getStatusErrorRequest()
     {
-        $this->expectException(HttpException::class);
+        $this->expectException(TinklException::class);
 
         $api = new Api([
             'clientId' => 'aclientId',

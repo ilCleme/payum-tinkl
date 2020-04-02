@@ -3,6 +3,7 @@
 namespace IlCleme\Tinkl;
 
 use Http\Message\MessageFactory;
+use IlCleme\Tinkl\Exception\TinklException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\Http\HttpException;
 use Payum\Core\Exception\InvalidArgumentException;
@@ -97,7 +98,7 @@ class Api
         $response = $this->client->send($request);
 
         if (false == ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300)) {
-            throw HttpException::factory($request, $response);
+            throw TinklException::factory($request, $response);
         }
 
         return json_decode($response->getBody()->getContents(), true);

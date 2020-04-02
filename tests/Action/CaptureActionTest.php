@@ -2,7 +2,10 @@
 
 namespace IlCleme\Tinkl\Tests\Action;
 
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use IlCleme\Tinkl\Action\CaptureAction;
+use IlCleme\Tinkl\Exception\TinklException;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
 use Payum\Core\Reply\HttpRedirect;
@@ -57,6 +60,30 @@ class CaptureActionTest extends GenericActionTest
             $this->assertArrayHasKey('redirect_url', $request->getModel());
             $this->assertArrayHasKey('url', $request->getModel());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function testCaptureNewRequestThrowException()
+    {
+        [$tokenMock, $genericTokenFactory, $gatewayMock] = $this->getMockForCapture($this->returnCallback(function (CreateInvoice $request) {
+            $request = new Request('GET', 'http://example.com/foobar');
+            $response = new Response(404);
+
+            throw TinklException::factory($request, $response);
+        }));
+
+        $request = new Capture($tokenMock);
+        $request->setModel([]);
+        $action = new CaptureAction();
+        $action->setGateway($gatewayMock);
+        $action->setGenericTokenFactory($genericTokenFactory);
+        $action->execute($request);
+
+        $this->assertArrayHasKey('status', $request->getModel());
+        $this->assertEquals('error', $request->getModel()['status']);
+        $this->assertArrayHasKey('errors', $request->getModel());
     }
 
     /**
@@ -121,6 +148,25 @@ class CaptureActionTest extends GenericActionTest
      * @test
      */
     public function testCaptureDeferredRequest()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $request = new Capture(['status' => 'deferred', 'activation_page' => 'activationPageUrl']);
+        $action = new CaptureAction();
+        $action->setGateway($gatewayMock);
+
+        try {
+            $action->execute($request);
+        } catch (HttpRedirect $exception) {
+            $this->assertEquals('activationPageUrl', $exception->getUrl());
+            $this->assertArrayHasKey('status', $request->getModel());
+            $this->assertEquals('deferred', $request->getModel()['status']);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function testCaptureRequestCatchException()
     {
         $gatewayMock = $this->createGatewayMock();
         $request = new Capture(['status' => 'deferred', 'activation_page' => 'activationPageUrl']);

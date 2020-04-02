@@ -2,6 +2,7 @@
 
 namespace IlCleme\Tinkl\Action;
 
+use IlCleme\Tinkl\Exception\TinklException;
 use IlCleme\Tinkl\Request\CreateInvoice;
 use IlCleme\Tinkl\Request\StatusInvoice;
 use Payum\Core\Action\ActionInterface;
@@ -30,21 +31,27 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (! $model->get('status', false)) {
-            $this->captureNewRequest($request, $model);
+        try {
+            if (! $model->get('status', false)) {
+                $this->captureNewRequest($request, $model);
+            }
+
+            if ($model->get('status') == 'deferred') {
+                $this->captureDeferredRequest($model);
+
+                return;
+            }
+
+            if ($model->get('status') == 'pending') {
+                $this->capturePendingRequest($request, $model);
+
+                return;
+            }
+        } catch (TinklException $tinklException) {
+            $model['status'] = 'error';
+            $model['errors'] = json_encode($tinklException->getMessage());
         }
 
-        if ($model->get('status') == 'deferred') {
-            $this->captureDeferredRequest($model);
-
-            return;
-        }
-
-        if ($model->get('status') == 'pending') {
-            $this->capturePendingRequest($request, $model);
-
-            return;
-        }
     }
 
     /**
