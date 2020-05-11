@@ -34,6 +34,9 @@ class StatusActionTest extends GenericActionTest
         $this->assertEquals($request->getValue(), 'new');
     }
 
+    /**
+     * @test
+     */
     public function testMarkUnknownRequestWithNotValidStatus()
     {
         $model = new ArrayObject(['status' => 'notvalidstatus']);
@@ -44,6 +47,9 @@ class StatusActionTest extends GenericActionTest
         $this->assertEquals($request->getValue(), 'unknown');
     }
 
+    /**
+     * @test
+     */
     public function testMarkPendingRequestWith()
     {
         $model = new ArrayObject();
@@ -56,5 +62,18 @@ class StatusActionTest extends GenericActionTest
 
             $this->assertEquals($request->getValue(), 'pending');
         }
+    }
+
+    /**
+     * @test
+     */
+    public function testMarkFailedRequestWithErrorStatus()
+    {
+        $model = new ArrayObject(['status' => 'error']);
+        $request = new $this->requestClass($model);
+        $request->setModel($model);
+        $this->action->execute($request);
+
+        $this->assertEquals($request->getValue(), 'failed');
     }
 }

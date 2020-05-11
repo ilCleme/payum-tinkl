@@ -47,6 +47,12 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
                 return;
             }
+
+            if ($model->get('status') == 'error') {
+                $this->captureErrorRequest($model);
+
+                return;
+            }
         } catch (TinklException $tinklException) {
             $model['status'] = 'error';
             $model['errors'] = json_encode($tinklException->getMessage());
@@ -105,6 +111,16 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         if (array_key_exists('activation_page', $model)) {
             throw new HttpRedirect($model['activation_page']);
         }
+    }
+
+    /**
+     * Execute operation for pending request.
+     *
+     * @param ArrayObject $model
+     */
+    protected function captureErrorRequest($model)
+    {
+        $model['errors'] = 'Payment is failed';
     }
 
     /**

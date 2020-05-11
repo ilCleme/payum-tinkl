@@ -166,6 +166,22 @@ class CaptureActionTest extends GenericActionTest
     /**
      * @test
      */
+    public function testCaptureErrorRequest()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $request = new Capture(['status' => 'error']);
+        $action = new CaptureAction();
+        $action->setGateway($gatewayMock);
+
+        $action->execute($request);
+        $this->assertArrayHasKey('status', $request->getModel());
+        $this->assertEquals('error', $request->getModel()['status']);
+        $this->assertEquals('Payment is failed', $request->getModel()['errors']);
+    }
+
+    /**
+     * @test
+     */
     public function testCaptureRequestCatchException()
     {
         $gatewayMock = $this->createGatewayMock();
