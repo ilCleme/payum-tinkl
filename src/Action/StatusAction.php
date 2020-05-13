@@ -44,6 +44,12 @@ class StatusAction implements ActionInterface
             return;
         }
 
+        if ($model['status'] == 'expired') {
+            $request->markExpired();
+
+            return;
+        }
+
         $request->markUnknown();
     }
 

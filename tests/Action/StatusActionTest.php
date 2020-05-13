@@ -76,4 +76,17 @@ class StatusActionTest extends GenericActionTest
 
         $this->assertEquals($request->getValue(), 'failed');
     }
+
+    /**
+     * @test
+     */
+    public function testMarkExpiredRequestWithExpiresStatus()
+    {
+        $model = new ArrayObject(['status' => 'expired']);
+        $request = new $this->requestClass($model);
+        $request->setModel($model);
+        $this->action->execute($request);
+
+        $this->assertEquals($request->getValue(), 'expired');
+    }
 }
